@@ -91,7 +91,7 @@ def project_checkout(pl,to_path,ptype,noop=False,nofetch=False,verbose=False) :
             continue
 
         title = element.findtext('title')
-        path = os.path.join(to_path,short_name)
+        path = os.path.join(to_path,short_name, '.git')
 
         git_clone_command = "/usr/bin/env git clone --mirror git://git.drupal.org/project/" + short_name + ".git " + path
         git_fetch_command = "/usr/bin/env git remote update"
