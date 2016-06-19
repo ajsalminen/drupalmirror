@@ -73,14 +73,15 @@ def project_checkout(pl,to_path,ptype,noop=False,nofetch=False,verbose=False) :
     
     # Total projects
     print "Total number of Drupal projects: " + str(n_projects)
-    rex = re.compile('^\d+$')
-    
+    rex = re.compile('^https://www.drupal.org/sandbox/')
+
     for element in elements:
         short_name = element.findtext('short_name')
+        link = element.findtext('link')
         project_type = element.findtext('type')
         # skip all sandbox projects
 
-        if rex.match(short_name) is not None :
+        if rex.match(link) is not None :
             n_projects_loaded += 1
             if verbose : print "Skip sandbox Project %s" % short_name
             continue
@@ -91,10 +92,10 @@ def project_checkout(pl,to_path,ptype,noop=False,nofetch=False,verbose=False) :
 
         title = element.findtext('title')
         path = os.path.join(to_path,short_name)
-        
-        git_clone_command = "/usr/bin/env git clone git://git.drupal.org/project/" + short_name + ".git " + path
-        git_fetch_command = "/usr/bin/env git fetch --all"
-        
+
+        git_clone_command = "/usr/bin/env git clone --mirror git://git.drupal.org/project/" + short_name + ".git " + path
+        git_fetch_command = "/usr/bin/env git remote update"
+
         if nofetch and (os.path.exists(path)) :
             n_projects_loaded += 1
             if verbose : print "Skip Fetching project: %s" % title
